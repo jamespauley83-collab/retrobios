@@ -1,0 +1,26 @@
+services:
+  site:
+    image: python:3.12-slim
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    command:
+      - sh
+      - -ec
+      - |
+        pip install --no-cache-dir --quiet pyyaml jsonschema==4.23.0 "mkdocs-material>=9.7.5,<10" "pymdown-extensions>=10.14"
+        python scripts/generate_site.py
+        exec mkdocs serve --dev-addr 0.0.0.0:3000 --no-livereload
+    healthcheck:
+      test:
+        - "CMD"
+        - "python"
+        - "-c"
+        - "import urllib.request; urllib.request.urlopen('http://localhost:3000/', timeout=5).read()"
+      interval: 15s
+      timeout: 10s
+      start_period: 120s
+      retries: 5
+    restart: on-failure
