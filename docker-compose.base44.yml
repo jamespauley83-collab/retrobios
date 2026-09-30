@@ -12,7 +12,7 @@ services:
       - |
         pip install --no-cache-dir --quiet pyyaml jsonschema==4.23.0 "mkdocs-material>=9.7.5,<10" "pymdown-extensions>=10.14"
         python scripts/generate_site.py
-        exec mkdocs serve --dev-addr 0.0.0.0:3000 --no-livereload
+        exec mkdocs serve --dev-addr 0.0.0.0:3000
     healthcheck:
       test:
         - "CMD"
